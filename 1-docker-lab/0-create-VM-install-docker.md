@@ -32,7 +32,7 @@ az group delete --name myResourceGroup
 open port 80 on the VM
 
 ```bash
-az vm open-port --resource-group myResourceGroup --name myVM --port 80
+az vm open-port --resource-group myResourceGroup --name myVM --port 8080
 ```
 
 get the public IP address of the VM
@@ -45,7 +45,7 @@ ssh into the VM
 
 ```bash
 chmod 600 ~/.ssh/id_rsa
-sudo ssh -i ~/.ssh/id_rsa azureuser@20.204.182.165
+sudo ssh -i ~/.ssh/id_rsa azureuser@20.204.135.39
 ```
 
 ---
