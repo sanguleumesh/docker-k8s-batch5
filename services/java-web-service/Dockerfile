@@ -77,7 +77,7 @@ HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
 VOLUME ["/app/logs"]
 
 # Set user permissions (Non-root user)
-USER appuser
+# USER root
 
 # Set the default shell
 SHELL ["/bin/sh", "-c"]
@@ -87,6 +87,9 @@ SHELL ["/bin/sh", "-c"]
 
 # Define default stop signal
 STOPSIGNAL SIGTERM
+
+# VOLUME
+VOLUME [ "/data" ]
 
 # Set an ONBUILD instruction for derived images (if needed)
 ONBUILD COPY additional-config/ /app/config/

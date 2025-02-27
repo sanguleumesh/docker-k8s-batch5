@@ -1,7 +1,7 @@
 ### create a container
 
 ```bash
-docker run ubuntu:20.04
+docker run ubuntu:20.04 
 docker container ls
 docker container ls -a
 docker run -it ubuntu:20.04
@@ -108,11 +108,16 @@ exit
 docker container ls -a
 ```
 
+
+
+
+
 ### Create a container resource limits
 
 ```bash
 
 # Memory limits - 200 MB of memory
+docker run --name my-unlimited-ubuntu -it ubuntu:20.04
 docker run --name my-limited-memory -m 200m -it ubuntu:20.04
 # Memory reservation - 100 MB of memory is guaranteed
 docker run --name my-memory-reservation --memory-reservation=100m -it ubuntu:20.04
