@@ -4,12 +4,30 @@
 docker images
 docker image ls
 
-docker pull docker.io/redis:latest
+# image name format: [registry-hostname[:port]/]repository[:tag]
 docker pull redis
+docker pull docker.io/redis:latest
+
 
 docker inspect redis
-docker history redis
+docker inspect node-web-service:v10
+docker history node-web-service:v10
 ```
+
+
+A tool for exploring each layer in a docker image:
+https://github.com/wagoodman/dive
+
+```bash
+DIVE_VERSION=$(curl -sL "https://api.github.com/repos/wagoodman/dive/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+curl -OL https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.deb
+sudo apt install ./dive_${DIVE_VERSION}_linux_amd64.deb
+```
+
+```bash
+dive node-web-service:v10
+```
+
 
 ### pull an image using a specific tag:
 
@@ -39,18 +57,6 @@ docker tag nagabhushanamn/greeting-service:v1 nagabhushanamn/greeting-service:tn
 docker image ls
 ```
 
-A tool for exploring each layer in a docker image:
-https://github.com/wagoodman/dive
-
-```bash
-DIVE_VERSION=$(curl -sL "https://api.github.com/repos/wagoodman/dive/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-curl -OL https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.deb
-sudo apt install ./dive_${DIVE_VERSION}_linux_amd64.deb
-```
-
-```bash
-dive nagabhushanamn/greeting-service:v1
-```
 
 ### demo-1: build a java-web-service image
 
@@ -75,7 +81,7 @@ curl http://localhost:8080/api/info
 ### build an image for multi-architecture:
 
 ```bash
-docker buildx build --platform linux/amd64,linux/arm64 -t java-web-service:v1 .
+docker buildx build --platform linux/amd64,linux/arm64 -t java-web-service:v11 .
 docker image ls
 docker inspect greeting-service:v1
 ```
