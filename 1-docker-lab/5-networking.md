@@ -153,4 +153,3 @@ docker run --network my_ipvlan_network --name ipvlan_container2 -it nicolaka/net
 docker network inspect my_ipvlan_network
 ```
 
-192.168.65.3

@@ -1,8 +1,3 @@
-Create a container
-
-```bash
-docker run -dit -p 8080:8080 nagabhushanamn/req-count-service:v1
-```
 
 ## Creating and Managing Volumes
 
@@ -16,39 +11,12 @@ docker volume ls
 docker volume rm my-vol1 my-vol2
 ```
 
-## Creating a Local Volume with Labels
-
-docker volume create \
- --driver local \
- --label project=myproject \
- --label environment=development \
- my-labeled-volume
-
-## Creating a Bind Mount Volume
-
-docker volume create \
- --driver local \
- --opt type=none \
- --opt device=/path/on/host \
- --opt o=bind \
- my-bind-volume
-
-## Creating a Volume with NFS Driver
-
-docker volume create \
- --driver local \
- --opt type=nfs \
- --opt o=addr=192.168.1.100,rw \
- --opt device=:/exported/path \
- my-nfs-volume
-
-...
 
 ## Working with Volumes
 
 ```bash
 docker volume ls
-docker run -dit --name alpine1 --mount source=data-vol,target=/data alpine
+docker run -dit --name alpine1 --mount source=my-vol1,target=/data alpine
 docker volume ls
 docker exec -it alpine1 sh
 docker volume inspect data-vol
