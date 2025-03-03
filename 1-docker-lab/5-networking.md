@@ -1,66 +1,5 @@
-## Docker Network Drivers/Types
 
-1. None:
 
-   - Disables networking for a container.
-   - Container has no network interfaces.
-
-2. Host:
-
-   - Removes network isolation between Docker host and containers.
-   - Containers use host’s network stack directly.
-
-3. Bridge:
-
-   - Default network driver.
-   - Containers on the same bridge network can communicate using IP addresses or container names.
-
-4. Overlay:
-
-   - Enables container communication across different Docker hosts in a swarm cluster.
-   - Used for multi-host networking.
-
-5. Macvlan:
-
-   - Assigns a MAC address to each container, appearing as a physical device on the network.
-   - Useful for integrating containers into existing network infrastructure.
-
-6. Ipvlan:
-
-   - Similar to Macvlan, but uses IP addresses instead of MAC addresses.
-   - Containers appear as physical devices on the network.
-
----
-
-### None Network Driver
-
-Create a container with the `none` network driver:
-
-```bash
-docker rm -f isolated_container
-docker run --network none --name isolated_container -it nicolaka/netshoot /bin/bash
-ifconfig
-```
-
-### Host Network Driver
-
-Create a container with the `host` network driver:
-
-```bash
-docker rm -f host_container
-docker run --network host --name host_container -it nicolaka/netshoot /bin/bash
-ifconfig
-```
-
-Create a container with the `host` network driver , and run a web server - nginx
-
-```bash
-docker rm -f host_container
-docker run --network host --name host_container -d nginx
-curl localhost
-```
-
----
 
 ### Bridge Network Driver
 
@@ -108,6 +47,36 @@ docker run --network my_bridge_network2 --name static_container2 --ip 192.168.10
 ifconfig
 ```
 
+### Host Network Driver
+
+Create a container with the `host` network driver:
+
+```bash
+docker rm -f host_container
+docker run --network host --name host_container -it nicolaka/netshoot /bin/bash
+ifconfig
+```
+
+Create a container with the `host` network driver , and run a web server - nginx
+
+```bash
+docker rm -f host_container
+docker run --network host --name host_container -d nginx
+curl localhost
+```
+
+
+### None Network Driver
+
+Create a container with the `none` network driver:
+
+```bash
+docker rm -f isolated_container
+docker run --network none --name isolated_container -it nicolaka/netshoot /bin/bash
+ifconfig
+```
+
+
 ### Macvlan Network Driver
 
 Create a Macvlan network:
@@ -127,11 +96,11 @@ ifconfig
 docker rm -f macvlan_container2
 docker run --network my_macvlan_network --name macvlan_container2 -it nicolaka/netshoot /bin/bash
 ifconfig
-
-
 docker network inspect my_macvlan_network
 
 ```
+
+
 
 ### Ipvlan Network Driver
 
