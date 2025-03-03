@@ -3,9 +3,9 @@ kind: Pod
 metadata:
   name: nginx-pod
   labels:
+    foo: foo
     app: nginx
-    type: ui
-    project: p1
+    env: prod
 spec:
   containers:
   - image: nginx
