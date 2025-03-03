@@ -26,7 +26,10 @@ kind version
 ### create k8s cluster
 
 ```bash
-sudo kind create cluster --image kindest/node:v1.30.0 --config kind-cluster.yaml --name my-cluster
+kind delete cluster --name my-cluster
+kind create cluster --image kindest/node:v1.30.0 --config kind-cluster.yaml --name my-cluster
+kind get clusters
+kubectl get nodes
 ```
 
 
@@ -35,21 +38,16 @@ sudo kind create cluster --image kindest/node:v1.30.0 --config kind-cluster.yaml
 ```bash
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 helm version
-
 helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
 helm repo update
-
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/latest/download/cert-manager.yaml
 kubectl wait --for=condition=available --timeout=600s deployment/cert-manager -n cert-manager
-
 kubectl create namespace cattle-system
 helm install rancher rancher-latest/rancher \
   --namespace cattle-system \
   --set hostname=rancher.localhost \
   --set bootstrapPassword=admin
-
-kubectl port-forward -n cattle-system svc/rancher 8443:443
-
+kubectl port-forward --address 0.0.0.0 -n cattle-system svc/rancher 8443:443
 ```
 
 
