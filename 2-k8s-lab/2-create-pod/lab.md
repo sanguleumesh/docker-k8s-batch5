@@ -62,8 +62,6 @@ kubectl delete -f pod.yaml
 
 ## ReplicationController, ReplicaSet, Deployment
 
-
-
 ### Create a Pod using ReplicationController
 
 ```bash

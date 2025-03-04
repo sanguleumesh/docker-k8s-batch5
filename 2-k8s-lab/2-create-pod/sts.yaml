@@ -1,35 +1,33 @@
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: nginx-sts
+  name: postgres
 spec:
+  serviceName: "postgres"
   replicas: 3
   selector:
     matchLabels:
-      app: nginx
-  serviceName: "nginx-service"
+      app: postgres
   template:
     metadata:
       labels:
-        app: nginx
+        app: postgres
     spec:
       containers:
-      - name: nginx
-        image: nginx
-        ports:
-        - containerPort: 80
+        - name: postgres
+          image: postgres:13
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+      spec:
+        accessModes: [ "ReadWriteOncePod" ]
+        resources:
+          requests:
+            storage: 1Gi
 
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-service
-spec:
-  selector:
-    app: nginx
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-  clusterIP: None

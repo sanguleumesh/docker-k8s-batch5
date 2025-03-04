@@ -18,5 +18,5 @@ spec:
         type: front-end
     spec:
       containers:
-      - image: nginx
+      - image: nginx:latest
         name: nginx-container

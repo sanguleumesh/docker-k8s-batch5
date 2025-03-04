@@ -3,10 +3,11 @@ kind: Pod
 metadata:
   name: nginx-pod
   labels:
-    foo: foo
+    foo: bar
     app: nginx
-    env: prod
+    envi: prod
+    type: ui
 spec:
   containers:
-  - image: nginx
+  - image: nginx:1.11.7
     name: nginx-container
