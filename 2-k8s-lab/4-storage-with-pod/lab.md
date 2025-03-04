@@ -1,5 +1,30 @@
 
 
+###  deploy java-web-service pod
+
+```bash
+kubectl apply -f java-web-service-pod.yaml
+kubectl delete -f java-web-service-pod.yaml
+kubectl get pods -o wide
+kubectl logs java-web-service-pod
+kubectl exec -it java-web-service-pod -c java-web-service-container -- sh
+kubectl exec -it java-web-service-pod -c log-processor-container -- sh
+apk --no-cache add curl
+curl http://localhost:8080/hello
+
+
+```
+
+
+### create PV
+    
+```bash
+kubectl apply -f pv.yaml
+kubectl get pv
+kubectl apply -f pvc.yaml
+kubectl get pvc
+```
+
 
 
 ### Volume: EmptyDir
