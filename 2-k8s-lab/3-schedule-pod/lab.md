@@ -22,22 +22,37 @@ kubectl delete -f manual-scheduled-pod.yaml
 
 ```bash
 kubectl get nodes --show-labels
+<<<<<<< HEAD
 kubectl label nodes my-k8s-cluster-worker2 disktype=ssd # add label to node
+=======
+kubectl label nodes my-cluster-worker2 disktype=ssd # add label to node
+>>>>>>> 7d6a1ca (schedule pods)
 kubectl apply -f node-selector-pod.yaml
 kubectl get pods -o wide
 kubectl describe pod node-selector-pod
 kubectl delete -f node-selector-pod.yaml
+<<<<<<< HEAD
 kubectl label nodes my-k8s-cluster-worker2 disktype- # remove label from node
+=======
+kubectl label nodes my-cluster-worker2 disktype- # remove label from node
+>>>>>>> 7d6a1ca (schedule pods)
 ```
 
 
 ### 3️⃣ Node Affinity
 
 ```bash
+<<<<<<< HEAD
 kubectl get nodes my-k8s-cluster-worker2  --show-labels
 kubectl get nodes -l disktype
 kubectl get nodes -L disktype
 kubectl label nodes my-k8s-cluster-worker2 disktype=ssd
+=======
+kubectl get nodes my-cluster-worker2  --show-labels
+kubectl get nodes -l disktype
+kubectl get nodes -L disktype
+kubectl label nodes my-cluster-worker2 disktype=ssd
+>>>>>>> 7d6a1ca (schedule pods)
 kubectl apply -f node-affinity-pod.yaml
 kubectl get pods -o wide
 kubectl describe pod node-affinity-pod

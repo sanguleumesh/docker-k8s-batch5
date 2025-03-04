@@ -37,7 +37,7 @@ kubectl get pods
 
 ### Lab: Get the logs of a Pod
 ```bash
-kubectl logs nginx-pod
+kubectl logs nginx-pod 
 kubectl logs nginx-pod -f
 ```
 

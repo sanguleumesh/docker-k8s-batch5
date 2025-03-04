@@ -4,8 +4,12 @@ kind: StatefulSet
 metadata:
   name: postgres
 spec:
+<<<<<<< HEAD
   serviceName: "postgres"
   replicas: 3
+=======
+  replicas: 2
+>>>>>>> 7d6a1ca (schedule pods)
   selector:
     matchLabels:
       app: postgres

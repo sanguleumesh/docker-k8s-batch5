@@ -10,7 +10,11 @@ spec:
         - matchExpressions:
           - key: disktype
             operator: In
+<<<<<<< HEAD
             values: ["ssd","fast-io"]
+=======
+            values: ["ssd"]
+>>>>>>> 7d6a1ca (schedule pods)
   containers:
   - name: nginx
     image: nginx

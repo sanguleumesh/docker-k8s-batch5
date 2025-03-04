@@ -3,7 +3,11 @@ kind: Pod
 metadata:
   name: manual-scheduled-pod
 spec:
+<<<<<<< HEAD
   nodeName: my-k8s-cluster-worker3
+=======
+  nodeName: my-node
+>>>>>>> 7d6a1ca (schedule pods)
   containers:
   - name: busybox
     image: busybox
