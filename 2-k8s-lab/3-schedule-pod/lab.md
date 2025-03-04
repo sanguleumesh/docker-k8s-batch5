@@ -18,41 +18,26 @@ kubectl describe pod manual-scheduled-pod
 kubectl delete -f manual-scheduled-pod.yaml
 ```
 
-### 2️⃣ Node Selector
-
+### 2️⃣ Node Selector ( using labels )
 ```bash
 kubectl get nodes --show-labels
-<<<<<<< HEAD
+kubectl label nodes my-k8s-cluster-worker size=large # add label to node
 kubectl label nodes my-k8s-cluster-worker2 disktype=ssd # add label to node
-=======
-kubectl label nodes my-cluster-worker2 disktype=ssd # add label to node
->>>>>>> 7d6a1ca (schedule pods)
 kubectl apply -f node-selector-pod.yaml
 kubectl get pods -o wide
 kubectl describe pod node-selector-pod
 kubectl delete -f node-selector-pod.yaml
-<<<<<<< HEAD
 kubectl label nodes my-k8s-cluster-worker2 disktype- # remove label from node
-=======
-kubectl label nodes my-cluster-worker2 disktype- # remove label from node
->>>>>>> 7d6a1ca (schedule pods)
 ```
 
 
 ### 3️⃣ Node Affinity
 
 ```bash
-<<<<<<< HEAD
-kubectl get nodes my-k8s-cluster-worker2  --show-labels
-kubectl get nodes -l disktype
-kubectl get nodes -L disktype
-kubectl label nodes my-k8s-cluster-worker2 disktype=ssd
-=======
-kubectl get nodes my-cluster-worker2  --show-labels
-kubectl get nodes -l disktype
-kubectl get nodes -L disktype
-kubectl label nodes my-cluster-worker2 disktype=ssd
->>>>>>> 7d6a1ca (schedule pods)
+kubectl get nodes my-k8s-cluster-worker  --show-labels
+kubectl get nodes -l size
+kubectl get nodes -L size
+kubectl label nodes my-k8s-cluster-worker size=large
 kubectl apply -f node-affinity-pod.yaml
 kubectl get pods -o wide
 kubectl describe pod node-affinity-pod
@@ -73,13 +58,17 @@ kubectl delete -f pod-affinity-pod.yaml
 ### 5️⃣ Taints & Tolerations
 
 ```bash
-kubectl describe node my-cluster-worker2
-kubectl taint nodes my-cluster-worker2 kafka=true:NoSchedule
+kubectl describe node my-k8s-cluster-worker
+kubectl taint nodes my-k8s-cluster-worker trainee=true:NoSchedule
 kubectl apply -f taint-toleration-pod.yaml
 kubectl get pods -o wide
 kubectl describe pod taint-toleration-pod
 kubectl delete -f taint-toleration-pod.yaml
 ```
+
+
+
+
 
 ### 6️⃣ Resource Requests & Limits
 
