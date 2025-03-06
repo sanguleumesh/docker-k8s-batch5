@@ -4,9 +4,9 @@ metadata:
   name: postgres-pv
 spec:
   capacity:
-    storage: 1Gi
+    storage: 10Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOncePod
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: 10.0.0.4

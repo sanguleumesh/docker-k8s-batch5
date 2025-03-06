@@ -18,6 +18,7 @@ metadata:
 data:
   POSTGRES_HOST: "db"
   REDIS_HOST: "redis"
+  foo: bar
 
 ---
 
