@@ -5,6 +5,6 @@ metadata:
 spec:
   nodeName: my-k8s-cluster-worker
   containers:
-  - name: busybox
-    image: busybox
-    command: ["sh", "-c", "echo 'Manually scheduled' && sleep 3600"]
+  - name: nginx
+    image: nginx
+    

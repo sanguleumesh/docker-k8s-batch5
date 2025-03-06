@@ -1,8 +1,8 @@
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
-  # disableDefaultCNI: true   # Disable Kind's default CNI
-  # podSubnet: "10.244.0.0/16"  # Use Cilium's default Pod CIDR
+  # disableDefaultCNI: true
+  # podSubnet: "10.244.0.0/16"
 nodes:
 - role: control-plane
 - role: worker

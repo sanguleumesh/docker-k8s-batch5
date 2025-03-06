@@ -34,7 +34,7 @@ public class JavaWebServiceApplication {
 	@RequestMapping("/hello")
 	public String hello() {
 		try {
-			fileWriter.write("log line..\n");
+			fileWriter.write("log line..\n");// writing log(state) on file ( storage )
 			fileWriter.flush();
 		} catch (IOException e) {
 			e.printStackTrace();

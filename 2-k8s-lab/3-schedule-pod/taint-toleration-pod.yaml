@@ -4,9 +4,9 @@ metadata:
   name: taint-toleration-pod
 spec:
   tolerations:
-  - key: "trainee"
+  - key: "k8s-trainee"
     operator: "Equal"
-    value: "true"
+    value: "yes"
     effect: "NoSchedule"
   containers:
   - name: nginx

@@ -8,9 +8,9 @@ spec:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
         - matchExpressions:
-          - key: disktype
+          - key: size
             operator: In
-            values: ["ssd"]
+            values: ["medium","large"]
   containers:
   - name: nginx
     image: nginx

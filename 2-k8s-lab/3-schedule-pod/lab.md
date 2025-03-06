@@ -9,7 +9,7 @@ kubectl describe pod default-scheduled-pod
 kubectl delete pod default-scheduled-pod
 ```
 
-### 8️⃣ Schedule based on Node Name
+### 8️⃣ Schedule based on Node Name ( manual )
 
 ```bash
 kubectl apply -f manual-scheduled-pod.yaml
@@ -49,24 +49,22 @@ kubectl delete -f node-affinity-pod.yaml
 
 ```bash
 kubectl get nodes --show-labels
-kubectl apply -f pod-affinity-pod.yaml
+kubectl apply -f pod-anti-affinity-pod.yaml
 kubectl get pods -o wide
 kubectl describe pod pod-affinity-pod
-kubectl delete -f pod-affinity-pod.yaml
+kubectl delete -f pod-anti-affinity-pod.yaml
 ```
 
 ### 5️⃣ Taints & Tolerations
 
 ```bash
 kubectl describe node my-k8s-cluster-worker
-kubectl taint nodes my-k8s-cluster-worker trainee=true:NoSchedule
+kubectl taint nodes my-k8s-cluster-worker k8s-trainee=yes:NoSchedule
 kubectl apply -f taint-toleration-pod.yaml
 kubectl get pods -o wide
 kubectl describe pod taint-toleration-pod
 kubectl delete -f taint-toleration-pod.yaml
 ```
-
-
 
 
 
@@ -100,3 +98,4 @@ kubectl delete -f priority-class.yaml
 kubectl label nodes my-cluster-worker3 disktype-
 kubectl taint nodes my-cluster-worker3 ssd-
 ```
+

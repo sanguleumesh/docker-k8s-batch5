@@ -32,6 +32,11 @@ kubectl get nodes
 ```
 
 
+### delete k8s cluster
+
+```bash
+kind delete cluster --name my-k8s-cluster
+```
 
 
 ### install helm and rancher

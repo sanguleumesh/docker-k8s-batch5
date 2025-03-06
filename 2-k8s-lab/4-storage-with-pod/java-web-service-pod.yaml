@@ -1,25 +1,37 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: java-web-service-pod
+  name: java-web-service-pod-1
 spec:
   nodeName: my-k8s-cluster-worker
   containers:
   - name: java-web-service-container
-    image: docker.io/nagabhushanamn/java-web-service:v1.1
+    image: docker.io/nagabhushanamn/java-web-service:v1.2
     volumeMounts:
     - mountPath: /app/data
-      name: log-volume
-  - name: log-processor-container
-    image: busybox
-    command: ["/bin/sh", "-c", "sleep 3600"]
-    volumeMounts:
-    - mountPath: /app/data
-      name: log-volume    
+      name: my-log-volume
   volumes:
-  - name: log-volume
-    # emptyDir: {}
-    # hostPath:
-    #  path: /app/data
+  - name: my-log-volume
     persistentVolumeClaim:
-      claimName: my-pvc
+      claimName: my-log-pvc
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: java-web-service-pod-2
+spec:
+  nodeName: my-k8s-cluster-worker2
+  containers:
+  - name: java-web-service-container
+    image: docker.io/nagabhushanamn/java-web-service:v1.2
+    volumeMounts:
+    - mountPath: /app/data
+      name: my-log-volume
+  volumes:
+  - name: my-log-volume
+    persistentVolumeClaim:
+      claimName: my-log-pvc
+    
+    
