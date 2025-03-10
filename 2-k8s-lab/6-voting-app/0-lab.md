@@ -59,9 +59,9 @@ sudo exportfs -v
 # ✅ 4️⃣ Verify NFS access from Kind (optional check):
 
 docker ps  # Get Kind node container ID
-docker exec -it <kind-node1-container-id> bash
+docker exec -it c1a1a0a7029c bash
 apt update && apt install -y nfs-common
-showmount -e <host-ip>
+showmount -e 192.168.0.107
 
 # ✅ 5️⃣ Apply Kubernetes PV and PVC:
 kubectl apply -f db-pv.yaml
@@ -119,7 +119,7 @@ helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/
 helm repo update
 
 helm install nfs-client nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
-  --set nfs.server=10.0.0.4 \
+  --set nfs.server=192.168.0.107 \
   --set nfs.path=/data/nfs/postgres \
   --set storageClass.name=nfs-storage \
   --set storageClass.defaultClass=true
@@ -210,16 +210,182 @@ kubectl delete -f voting-app-v7.yaml
 ```
 
 
-✅ Next Steps
-Would you like me to: ✅ Package this into a single Helm chart for easy deployment?
-✅ Provide a HealthCheck dashboard using Prometheus & Grafana?
-✅ Add Startup Probes for apps that take longer to start?
+--------------------------------------------------------------------------
+### Loadbalancer Service
+--------------------------------------------------------------------------
+
+
+```bash
+kubectl apply -f voting-app-v8.yaml
+kubectl get pods -w
+kubectl delete -f voting-app-v8.yaml
+```
 
 
 
 
+--------------------------------------------------------------------------
+### Ingress Service
+--------------------------------------------------------------------------
+
+
+on kind k8s cluster,
+
+```bash
+kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml
+kubectl wait --namespace ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
+  --timeout=90s
+
+kubectl apply -f voting-app-v9.yaml
+kubectl get pods
+
+
+sudo nano /etc/hosts
+
+
+# to access form Mac
+kubectl port-forward --address 0.0.0.0 -n ingress-nginx svc/ingress-nginx-controller 8080:80
+
+
+kubectl delete -f voting-app-v9.yaml
+
+```
+
+
+--------------------------------------------------------------------------
+### Network policies with calico-CNI
+--------------------------------------------------------------------------
+
+
+### Install Calico CNI on Kind
+
+```bash
+kubectl delete daemonsets -n kube-system kindnet
+kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+kubectl get pods -n kube-system
+```
+
+### Apply Network Policy
+
+```bash
+kubectl apply -f voting-app-v10.yaml
+kubectl get pods
+kubectl get svc
+kubectl get networkpolicies
+
+kubectl exec -it $(kubectl get pod -l app=vote -o jsonpath="{.items[0].metadata.name}") -- sh
+nc -zv redis 6379
+nc -zv db 5432
+
+
+kubectl delete -f voting-app-v10.yaml
+```
 
 
 
 
+--------------------------------------------------------------------------
+###  Istio with Calico?
+--------------------------------------------------------------------------
 
+
+🚀 Why Use Istio with Calico?
+
+Istio provides traffic management, security, and observability at the application layer (L7).
+Calico provides network security policies and network routing at the network layer (L3/L4).
+Together, they enable fine-grained security, service-to-service encryption, and observability.
+
+
+
+Install Istio on Kind
+```bash
+# Download and install Istio
+curl -L https://istio.io/downloadIstio | sh -
+cd istio-*
+export PATH=$PWD/bin:$PATH
+
+# Install Istio with default profile
+istioctl install --set profile=demo -y
+
+# Verify Istio installation
+kubectl get pods -n istio-system
+
+# Enable automatic sidecar injection
+kubectl label namespace default istio-injection=enabled --overwrite
+
+# Deploy Voting App
+cd ..
+kubectl apply -f voting-app-v11.yaml
+
+# Verify Voting App
+kubectl get pods
+kubectl get svc
+kubectl get gateway
+kubectl get virtualservice
+kubectl get svc istio-ingressgateway -n istio-system
+kubectl get nodes -o wide
+
+echo "172.18.0.5 vote.local result.local" | sudo tee -a /etc/hosts
+curl -v -H "Host: vote.local" http://172.18.0.5:31193
+curl -v -H "Host: result.local" http://172.18.0.5:31193
+
+# 🔥 Final Checks
+kubectl logs -l istio=ingressgateway -n istio-system
+kubectl get pods -o jsonpath='{.items[*].spec.containers[*].name}' | grep istio-proxy || echo "Sidecar not injected"
+
+# Cleanup
+kubectl delete -f voting-app-v11.yaml
+
+
+
+# istio add-ons
+kubectl apply -f istio-1.25.0/samples/addons/kiali.yaml
+kubectl apply -f istio-1.25.0/samples/addons/prometheus.yaml
+kubectl apply -f istio-1.25.0/samples/addons/grafana.yaml
+
+# Verify Add-ons
+kubectl get pods -n istio-system
+
+# Access Kiali Dashboard
+istioctl dashboard kiali
+
+kubectl get svc -n istio-system
+for i in {1..5000}; do curl -H "Host: vote.local" http://172.18.0.5:31193; done
+
+
+# Access Prometheus Dashboard
+istioctl dashboard prometheus
+
+
+# Access Grafana Dashboard
+istioctl dashboard grafana
+
+# Cleanup
+kubectl delete -f voting-app-v11.yaml
+
+
+```
+
+
+--------------------------------------------------------------------------
+###  Traffic Splitting with Istio
+--------------------------------------------------------------------------
+
+
+```bash
+kubectl apply -f voting-app-v12.yaml
+kubectl get pods
+kubectl get svc
+kubectl get gateway 
+
+
+# Access Kiali Dashboard
+istioctl dashboard kiali
+
+
+for i in {1..10000}; do curl -H "Host: vote.local" http://172.18.0.5:31193; done
+
+kubectl delete -f voting-app-v12.yaml
+```
