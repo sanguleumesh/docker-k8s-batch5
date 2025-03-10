@@ -99,11 +99,11 @@ spec:
         - destination:
             host: vote
             subset: v1
-          weight: 90
+          weight: 50
         - destination:
             host: vote
             subset: v2
-          weight: 10
+          weight: 50
 
 ---
 # 🔹 Istio Gateway (Expose `vote` Service Externally)
